@@ -20,10 +20,15 @@ Page({
         this.setData({
             feed_url
         })
-        wx.setNavigationBarTitle({
-            title
-        })
-        this.getPosts(feed_url);
+        if(title){
+            wx.setNavigationBarTitle({
+                title
+            })
+            this.getPosts(feed_url);
+        }else{
+            this.parseFeed(feed_url);
+        }
+        
     },
     parseFeed(url){
         app.B.doing('正在解析...');
@@ -32,11 +37,14 @@ Page({
             data:{
                 feed_url:url
             }
-        }).then(()=>{
+        }).then((res)=>{
             app.B.done();
             this.getPosts(url);
+            wx.setNavigationBarTitle({
+                title: res && res.title || '文章列表',
+            })
             wx.stopPullDownRefresh();
-        })
+        },()=>{app.B.done();})
     },
     getPosts(url){
         app.B.doing('正在获取文章...');

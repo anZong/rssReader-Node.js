@@ -13,6 +13,7 @@ exports.main = (event, context) => {
     let openid = event.userInfo.openId;
     return new Promise((resolve,reject)=>{
         parser.parseFeed(feed_url, (res) => {
+            console.log(res);
             let posts = res.items.map((post)=>{
                 return {
                     feed_url: feed_url,
@@ -24,7 +25,9 @@ exports.main = (event, context) => {
             })
             dbop.updateFeed(feed_url,openid, res.meta);
             dbop.createPosts(posts);
-            resolve();
+            resolve({
+                title: res && res.meta && res.meta.title
+            });
         });
     })  
 }

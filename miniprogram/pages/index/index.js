@@ -52,11 +52,10 @@ Page({
     },
     getFeeds(){
         let feeds = wx.getStorageSync('feeds');
-        if(!this.refresh && !!feeds){
+        if(!this.data.refresh && !!feeds){
             this.setData({
                 feeds
             })
-            wx.stopPullDownRefresh();
         }else{
             app.B.doing('正在加载...');
             db.collection('Feed').orderBy('addTime','desc').where({
