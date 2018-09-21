@@ -1,0 +1,42 @@
+/**app.wxss**/
+.container{
+    background-color: #f2f2f2;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+.cells{
+    margin: 10px auto;
+    padding: 0 10px;
+    background-color: #FFFFFF;
+    font-size: 14px;
+}
+
+.cell{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #f2f2f2;
+}
+
+.cell:last-child{
+    border: none;
+}
+
+.cell_bd{
+    flex-grow: 1;
+}
+
+.cell_ft{
+    font-size: 12px;
+    color: #999;
+    flex-shrink: 0;
+}
+
+.no-content{
+    font-size: 14px;
+    padding: 10px;
+    text-align: center;
+    color: #999;
+}

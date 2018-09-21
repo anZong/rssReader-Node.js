@@ -1,0 +1,37 @@
+<!--pages/index/index.wxml-->
+<view class='container'>
+    <view class='search'>
+        <input name='kw' value='{{search_input}}' placeholder='搜索' confirm-type='search' placeholder-style='text-align:center;font-size:14px;' bindconfirm='search'></input>
+    </view>
+    <view class='feeds cells' wx:if='{{feeds && feeds.length}}'>
+        <view class='cell' wx:for='{{feeds}}' wx:key='{{index}}' bindtap='gotoPosts' data-url='{{item.url}}' data-title='{{item.title}}'>
+            <view class='cell_hd'></view>
+            <view class='cell_bd'>{{item.title}}</view>
+            <view class='cell_ft'></view>
+        </view>
+    </view>
+    <view class='addFeed' bindtap='showAdd'></view>
+    <view wx:if='{{showNewFeed}}'>
+        <view class='mask'  bindtap='hideNewFeed'></view>
+        <view class='newFeed'>
+            <form bindsubmit='addFeed'>
+                <input name='url' placeholder='http://订阅地址' focus='true' cursor-spacing='100'/>
+                <button form-type='submit'>确定</button>
+            </form>
+        </view>
+    </view>
+    <view class='results' wx:if='{{search_results}}'>
+        <block wx:if='{{search_results.length}}'>
+            <view class='search-tips'>搜索结果</view>
+            <view class='cells'>
+                <view class='cell result' wx:for='{{search_results}}' wx:key='{{index}}' bindtap='addFeedFromSearch' data-item='{{item}}'>
+                    <view class='cell_hd'></view>
+                    <view class='cell_bd'>{{item.title}}</view>
+                    <view class='cell_ft'></view>
+                </view>
+            </view>
+        </block>
+        <view wx:if='{{!search_results.length}}' class='no-content'>暂未收录</view>
+        <view class='close' bindtap='closeSearch'></view>
+    </view>
+</view>

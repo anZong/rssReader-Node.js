@@ -1,0 +1,17 @@
+<!--pages/post/detail.wxml-->
+<wxs src="../../filters/filters.wxs" module="filters" />
+<view class='container'>
+    <scroll-view scroll-y enable-back-to-top='true' scroll-with-animation='true' bindscroll='scroll' scroll-top='{{scrollTop}}' bindlongtap='viewImages'>
+        <view class='post'>
+            <view class='title'>{{post.title}}</view>
+            <view class='published'>
+                <text>作者：{{post.author}}</text>
+                <text>发布时间:{{filters.getDateTime(post.date.$timestamp*1000)}}</text>
+            </view>
+            <view class='content'>
+                <rich-text nodes='{{post.content}}' type='text'></rich-text>
+            </view>
+        </view>
+    </scroll-view>  
+    <view wx:if='{{showTop}}' class='toTop' bindtap='toTop'>TOP</view>
+</view>

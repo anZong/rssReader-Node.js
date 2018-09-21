@@ -1,0 +1,109 @@
+/* pages/index/index.wxss */
+.addFeed{
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    bottom: 5px;
+    left: 50%;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-left: -15px;
+    background: rgba(0, 0, 0, 0.5)
+}
+.addFeed::before{
+    content: '+';
+    color: #FFF;
+    margin-top: -5px;
+}
+
+.mask{
+    position: fixed;
+    left: 0;
+    right:0;
+    top: 0;
+    bottom:0;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.5)
+}
+.newFeed{
+    position: fixed;
+    width: 300px;
+    height: 120px;
+    left: 50%;
+    top: 50%;
+    margin-left: -150px;
+    margin-top: -60px;
+    border-radius: 5px;
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: #FFF;
+    z-index: 11;
+}
+.newFeed input{
+    font-size: 14px;
+    border: 1px solid #f2f2f2;
+    padding: 5px;
+    margin: 10px auto;
+}
+.newFeed button{
+    display: block;
+    width: 80px;
+    font-size: 14px;
+    margin: 15px auto;
+    line-height: 32px;
+}
+
+.search{
+    margin-top: 5px;
+}
+
+.search input{
+    border: 1px solid #f2f2f2;
+    background-color: #FFF;
+    padding: 5px 10px;
+    font-size: 12px;
+}
+
+.cells{
+    margin-top: 5px;
+}
+
+.results{
+    position: fixed;
+    top: 50px;
+    bottom: 0;
+    z-index: 100;
+    width: 100vw;
+    height: 50vh;
+    overflow-y: scroll;
+    background-color: #FFF;
+}
+
+.search-tips{
+    text-align: center;
+    font-size: 12px;
+    padding: 5px 10px;
+    color: #999;
+}
+
+.result{
+    padding: 5px 0;
+}
+
+.close{
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: rotate(45deg);
+}
+.close::after{
+    content: '+';
+    font-size: 24px;
+    color: #999;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    margin-left: -12px;
+}

@@ -1,0 +1,145 @@
+var DateFr = {
+    getDate: function (date, splitStr) {
+        if (!date) return '';
+
+        var date = getDate(date);
+        var M = date.getMonth() + 1;
+        var y = date.getFullYear();
+        var d = date.getDate();
+
+        if (M < 10) M = "0" + M;
+        if (d < 10) d = "0" + d;
+        if (!splitStr) splitStr = '-';
+        return y + splitStr + M + splitStr + d;
+    },
+    getDateTime: function (date, splitStr) {
+        if (!date) return '';
+        var str = DateFr.getDate(date, splitStr);
+        var date = getDate(date);
+        var h = date.getHours();
+        var m = date.getMinutes();
+        var s = date.getSeconds();
+        if (h < 10) h = '0' + h;
+        if (m < 10) m = '0' + m;
+        if (s < 10) s = '0' + s;
+        return str + ' ' + h + ':' + m + ':' + s;
+    },
+    getDateTimev2: function (timestamp, splitStr) {
+        /**
+         * 今天： hh:mm
+         * 昨天：昨天 hh:mm
+         * 前天：前天 hh:mm
+         * 今年  mm-dd hh:mm
+         * 其余返回 yyyy-mm-dd hh:mm
+         */
+        if ((timestamp + '').length != 13) {
+            timestamp = timestamp * 1000;
+        }
+        var now = Date.now();
+        var year = getDate(now).getFullYear() + '';
+        var str = DateFr.getDateTime(timestamp, splitStr, false) + '';
+        str = str.slice(0, -3); //舍去秒
+        var date = str.split(' ')[0];
+        var time = str.split(' ')[1];
+        var delta = now - timestamp;
+        var one_day = 24 * 60 * 60 * 1000;
+        if (delta <= one_day) {
+            date = '';
+        } else if (delta > one_day && delta <= 2 * one_day) {
+            date = '昨天';
+        } else if (delta > 2 * one_day && delta <= 3 * one_day) {
+            date = '前天';
+        } else if (date.split(splitStr)[0] == year) {
+            date = date.slice(5);
+        }
+        return date + ' ' + time;
+    },
+    getDeltaTime: function (date) {
+        var delta = date * 1000 - Date.now();
+        if (delta < 0) {
+            return {
+                code: -1,
+                str: '00:00:00'
+            };
+        }
+        var h = Math.floor(delta / 1000 / 60 / 60) || 0;
+        var m = Math.floor((delta - h * 60 * 60 * 1000) / 1000 / 60) || 0;
+        var s = Math.floor((delta - h * 60 * 60 * 1000 - m * 60 * 1000) / 1000) || 0;
+        if (h < 10) h = '0' + h;
+        if (m < 10) m = '0' + m;
+        if (s < 10) s = '0' + s;
+        return {
+            code: 1,
+            str: h + ':' + m + ':' + s
+        }
+    }
+}
+
+var StrFr = {
+    slice: function (str, len) {
+        if (!str) return;
+        var _str = str.slice(0, len);
+        if (str.length > len) _str += '...';
+        return _str;
+    },
+    split: function (str, splitStr) {
+        if (!str) return;
+        return str.split(splitStr);
+    },
+    first: function (str, splitStr) {
+        var arr = StrFr.split(str || "", splitStr);
+        return arr && arr.length && arr[0] || '';
+    },
+    tojson: function (str) {
+        if (!str) return;
+        console.log(JSON.parse(str));
+        return JSON.parse(str);
+    },
+    strmask: function (str) {
+        if (!str) return;
+        str += ''
+        var len = str.length;
+        var mask_len = Math.floor(len/2);
+        str = str.substring(0, len - mask_len);
+        for(var i=0;i<mask_len;i++){
+            str += '*';
+        }
+        return str;
+    }
+}
+
+var ImgFr = {
+    image: function (src, tp) {
+        var url = src;
+        if (url && url.length > 0) {
+            if (url.indexOf("://") > 0 && url.indexOf("!") < 0) {
+                url = url + "!" + tp;
+            }
+        }
+        return url;
+    },
+    small: function (src) {
+        return ImgFr.image(src, 'small')
+    }
+};
+
+var NumFr = {
+    toFixed: function (num, len) {
+        return Number(num).toFixed(len);
+    }
+};
+
+module.exports = {
+    getDate: DateFr.getDate,
+    getDateTime: DateFr.getDateTime,
+    getDeltaTime: DateFr.getDeltaTime,
+    slice: StrFr.slice,
+    split: StrFr.split,
+    first: StrFr.first,
+    tojson: StrFr.tojson,
+    strmask: StrFr.strmask,
+    toFixed: NumFr.toFixed,
+    getDateTimev2: DateFr.getDateTimev2,
+    image: ImgFr.image,
+    smallimg: ImgFr.small,
+}
