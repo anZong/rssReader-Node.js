@@ -4,7 +4,7 @@
         <input name='kw' value='{{search_input}}' placeholder='搜索' confirm-type='search' placeholder-style='text-align:center;font-size:14px;' bindconfirm='search'></input>
     </view>
     <view class='feeds cells' wx:if='{{feeds && feeds.length}}'>
-        <view class='cell' wx:for='{{feeds}}' wx:key='{{index}}' bindtap='gotoPosts' data-url='{{item.url}}' data-title='{{item.title}}'>
+        <view class='cell' wx:for='{{feeds}}' wx:key='{{index}}' bindtap='gotoPosts' data-url='{{item.url}}' data-title='{{item.title}}' data-id='{{item._id}}' catchlongpress='delFeed'>
             <view class='cell_hd'></view>
             <view class='cell_bd'>{{item.title}}</view>
             <view class='cell_ft'></view>

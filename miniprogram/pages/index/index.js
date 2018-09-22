@@ -134,6 +134,24 @@ Page({
             url: `/pages/post/list?url=${url}&title=${title}`
         })
     },
+    delFeed(e){
+        let dataset = e.currentTarget.dataset;
+        let id = dataset.id;
+        let _this = this;
+        app.B.confirm('提示','是否删除此订阅?',(res)=>{
+            if(res.confirm){
+                db.collection('Feed').doc(id).remove().then(()=>{
+                    app.B.toast('删除成功!');
+                    _this.setData({
+                        refresh:true
+                    })
+                    _this.getFeeds();
+                },()=>{
+                    app.B.toast('删除失败!','none');
+                })
+            }
+        })
+    },
     /**
      * 页面相关事件处理函数--监听用户下拉动作
      */

@@ -12,8 +12,7 @@ exports.main = (event, context) => {
     let feed_url = event.feed_url;
     let openid = event.userInfo.openId;
     return new Promise((resolve,reject)=>{
-        parser.parseFeed(feed_url, (res) => {
-            console.log(res);
+        parser.parseFeed(feed_url,(res) => {
             let posts = res.items.map((post)=>{
                 return {
                     feed_url: feed_url,
@@ -23,6 +22,7 @@ exports.main = (event, context) => {
                     author: post.author
                 }
             })
+            console.log('meta:',res.meta);
             dbop.updateFeed(feed_url,openid, res.meta);
             dbop.createPosts(posts);
             resolve({

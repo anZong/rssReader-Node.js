@@ -41,7 +41,7 @@ Page({
             app.B.done();
             this.getPosts(url);
             wx.setNavigationBarTitle({
-                title: res && res.title || '文章列表',
+                title: res && res.result && res.result.title || '文章列表',
             })
             wx.stopPullDownRefresh();
         },()=>{app.B.done();})

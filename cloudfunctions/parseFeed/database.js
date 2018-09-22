@@ -2,49 +2,53 @@ const cloud = require('wx-server-sdk')
 cloud.init()
 const db = cloud.database();
 
-exports.updateFeed = (feed_url,openid, meta) => {
+exports.updateFeed = async (feed_url,openid, meta) => {
     console.log('updated...');
     console.log('feed_url:',feed_url);
     console.log('openid:',openid);
     // console.log('meta:',meta);
     let Feed = db.collection('Feed');
-    Feed.where({
+    let _feed = await Feed.where({
         url: feed_url
-    }).get().then((rres)=>{
-        console.log('rres:',rres);
-        if (!(rres && rres.data && rres.data.length)){
-            Feed.add({
-                data:{
-                    title: meta.title,
-                    _openid: openid,
-                    addTime: new Date(),
-                    pubdate: meta.pubdate,
-                    url: feed_url
-                }
-            })
-        }
-    })
+    }).get();
+    console.log('feed:',_feed);
+    if (!(_feed && _feed.data && _feed.data.length)){
+        _feed = await Feed.add({
+            data:{
+                title: meta.title || '',
+                _openid: openid,
+                addTime: new Date(),
+                pubdate: meta.pubdate || new Date(),
+                url: feed_url
+            }
+        })
+        console.log('new feed:',_feed);
+    }
+    return _feed
 }
 
-exports.createPosts = (items) => {
+exports.createPosts = async (items) => {
     console.log('create posts...');
     items = items || [];
     let collection = db.collection('Post');
-    items.forEach((item) => {
-        let posts = collection.where({
-            feed_url: item.feed_url,
-            title: item.title
-        }).get().then((res)=>{
-            if(res && res.data && res.data.length){
+    return await new Promise((resolve,reject)=>{
+        let result = [];
+        items.forEach(async (item) => {
+            let posts = await collection.where({
+                feed_url: item.feed_url,
+                title: item.title
+            }).get();
+            console.log('posts:', posts);
+            if (posts && posts.data && posts.data.length) {
                 console.log('this post id exited.')
-            }else{
-                collection.add({
-                    data: item,
-                    success:(res)=>{
-                        console.log('new post:',res);
-                    }
+            } else {
+                let post = await collection.add({
+                    data: item
                 })
+                result.push(post);
+                console.log('new post:', post);
             }
-        });
+        })
+        resolve(result);
     })
 }
