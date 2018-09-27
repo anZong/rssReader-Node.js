@@ -8,10 +8,11 @@ exports.parseFeed = (url,cbk) => {
     })
 
     req.on('error', (error) => {
-        console.error(error);
+        console.error('request error:',error);
     })
 
     req.on('response', function (res) {
+        console.log('request success!');
         if (res.statusCode !== 200) {
             console.error('request bad');
         } else {
@@ -20,7 +21,7 @@ exports.parseFeed = (url,cbk) => {
     })
 
     feedparser.on('error', (error) => {
-        console.error(error);
+        console.error('feedparser error:',error);
     })
 
     let result = {

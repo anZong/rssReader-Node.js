@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "feedparser": "^2.2.9",
+    "request": "^2.88.0",
     "wx-server-sdk": "latest"
   }
 }
