@@ -41,10 +41,23 @@ Page({
             app.B.done();
             this.getPosts(url);
             wx.setNavigationBarTitle({
-                title: res && res.result && res.result.title || '文章列表',
+                title: res.result.title || '文章列表',
             })
+            if(res.result.is_new){
+                let feeds = wx.getStorageSync('feeds');
+                feeds.unshift({
+                    _id: res.result._id,
+                    title: res.result.title,
+                    url: url
+                })
+                wx.setStorageSync('feeds', feeds)
+            }
             wx.stopPullDownRefresh();
-        },()=>{app.B.done();})
+        }).catch(err=>{
+            console.log(err);
+            app.B.done();
+            app.B.toast('解析失败','none')
+        })
     },
     getPosts(url){
         app.B.doing('正在获取文章...');

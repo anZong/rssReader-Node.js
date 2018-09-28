@@ -15,8 +15,11 @@
         <view class='mask'  bindtap='hideNewFeed'></view>
         <view class='newFeed'>
             <form bindsubmit='addFeed'>
-                <input name='url' placeholder='http://订阅地址' focus='true' cursor-spacing='100'/>
-                <button form-type='submit'>确定</button>
+                <input name='url' value='{{feed_url}}' placeholder='http://订阅地址' focus='true' cursor-spacing='100'/>
+                <view class='btns'>
+                    <button class='btn btn-paste' bindtap='paste'>粘贴</button>
+                    <button class='btn btn-ok' form-type='submit'>确定</button>
+                </view>
             </form>
         </view>
     </view>

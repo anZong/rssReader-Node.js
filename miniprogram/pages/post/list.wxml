@@ -5,7 +5,7 @@
         <view class='cell' wx:for='{{posts}}' wx:key='{{index}}' bindtap='gotoDetail' data-id='{{item._id}}'>
             <view class='cell_hd'></view>
             <view class='cell_bd'>{{item.title}}</view>
-            <view class='cell_ft'>{{filters.getDateTime(item.date.$timestamp*1000)}}</view>
+            <view class='cell_ft'>{{filters.getDate(item.date.$timestamp*1000)}}</view>
         </view>
     </view>
 </view>

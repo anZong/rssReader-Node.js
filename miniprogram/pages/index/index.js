@@ -12,7 +12,8 @@ Page({
         feeds:null,
         showNewFeed:false,
         search_results:null,
-        search_input:''
+        search_input:'',
+        feed_url:''
     },
     onShow(){
         if(app.globalData.openid){
@@ -58,17 +59,22 @@ Page({
             })
         }else{
             app.B.doing('正在加载...');
-            db.collection('Feed').orderBy('addTime','desc').where({
-                _openid: app.globalData.openid
-            }).get().then((res) => {
-                app.B.done();
-                this.setData({
-                    feeds: res.data || [],
-                    refresh:false
-                })
-                wx.stopPullDownRefresh();
-                wx.setStorageSync('feeds', res.data)
-            }, () => { app.B.done();})
+            let options = {}
+            db.collection('Site').doc('W6yWZc9bC1ul1y0t')
+            .get().then((res)=>{
+                if(!res.data.value){
+                    options['_openid'] = app.globalData.openid
+                }
+                db.collection('Feed').orderBy('addTime', 'desc').where(options).get().then((res) => {
+                    app.B.done();
+                    this.setData({
+                        feeds: res.data || [],
+                        refresh: false
+                    })
+                    wx.stopPullDownRefresh();
+                    wx.setStorageSync('feeds', res.data)
+                }, () => { app.B.done(); })
+            });            
         }
     },
     search(e){
@@ -151,6 +157,20 @@ Page({
                 })
             }
         })
+    },
+    paste(){
+        wx.getClipboardData({
+            success:(res)=>{
+                if(res.data){
+                    this.setData({
+                        feed_url: res.data
+                    })
+                }
+            },
+            fail:(e)=>{
+                console.log(e);
+            }
+        })  
     },
     /**
      * 页面相关事件处理函数--监听用户下拉动作
